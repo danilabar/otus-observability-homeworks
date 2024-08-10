@@ -1,0 +1,22 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Prometheus php_fpm_exporter Exporter
+After=network-online.target
+
+[Service]
+Type=simple
+#User={{ php_fpm_exporter_system_user }}
+#Group={{ php_fpm_exporter_system_group }}
+ExecStart={{ php_fpm_exporter_binary_install_dir }}/php_fpm_exporter \
+    '--addr={{ php_fpm_exporter_web_listen_address }}' \
+    '--web.telemetry-path={{ php_fpm_exporter_web_telemetry_path }}' \
+    '--endpoint={{ php_fpm_exporter_php_fpm_endpoint }}'
+
+SyslogIdentifier=php_fpm_exporter
+Restart=always
+RestartSec=1
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target

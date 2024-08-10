@@ -1,0 +1,20 @@
+---
+# Установка exporters
+- name: Install exporters on CMS
+  hosts: CMS
+  roles:
+    - role: prometheus.prometheus.nginx_exporter
+      vars:
+        - nginx_exporter_scrape_uri: "http://127.0.0.1:8080/server-status"
+    - role: prometheus.prometheus.mysqld_exporter
+      vars:
+        - mysqld_exporter_username: exporter
+        - mysqld_exporter_password: password
+        - mysqld_exporter_socket: /var/lib/mysql/mysql.sock
+    - role: prometheus.prometheus.node_exporter
+    - role: php_fpm_exporter
+
+- name: Install exporters on CMS
+  hosts: promvm-1
+  roles:
+    - role: prometheus.prometheus.blackbox_exporter

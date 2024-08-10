@@ -1,0 +1,10 @@
+---
+CMS:
+  hosts:
+    cmsvm-1:
+      ansible_host: 192.168.68.118
+
+Prom:
+  hosts:
+    promvm-1:
+      ansible_host: 192.168.68.119

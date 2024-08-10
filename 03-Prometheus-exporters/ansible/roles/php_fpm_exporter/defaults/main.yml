@@ -1,0 +1,16 @@
+---
+php_fpm_exporter_repo: "bakins/php-fpm-exporter"
+php_fpm_exporter_version: 0.6.1
+php_fpm_exporter_binary_url: "https://github.com/{{ php_fpm_exporter_repo }}/releases/download/v{{ php_fpm_exporter_version }}/php-fpm-exporter.linux.amd64"
+
+php_fpm_exporter_web_listen_address: "0.0.0.0:8181"
+php_fpm_exporter_web_telemetry_path: "/metrics"
+php_fpm_exporter_php_fpm_endpoint: "http://127.0.0.1/status"
+
+# Internal variables.
+php_fpm_exporter_binary_install_dir: "/usr/local/bin"
+php_fpm_exporter_system_group: "php_fpm-exp"
+php_fpm_exporter_system_user: "{{ php_fpm_exporter_system_group }}"
+
+# Local path to stash the archive and its extraction
+php_fpm_exporter_archive_path: /tmp
