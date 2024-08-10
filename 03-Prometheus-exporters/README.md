@@ -56,9 +56,9 @@ ansible-galaxy collection install prometheus.prometheus
 
 ![img.png](img/img.png)
 
-Написал простую ansible [role](03-Prometheus-exporters/ansible/roles/php_fpm_exporter) для установки **php_fpm_exporter**
+Написал простую ansible [role](ansible/roles/php_fpm_exporter) для установки **php_fpm_exporter**
 
-Написал ansible-playbook [site.yml](03-Prometheus-exporters/ansible/site.yml) для установки exporters
+Написал ansible-playbook [site.yml](ansible/site.yml) для установки exporters
 
 Выполнил установку exporters
 
@@ -98,9 +98,9 @@ Exporters запущены и отображают метрики
 
 ## Установка Prometheus
 
-Для запуска Prometheus использовал Docker [docker-compose.yml](03-Prometheus-exporters/prometheus/docker-compose.yml)
+Для запуска Prometheus использовал Docker [docker-compose.yml](prometheus/docker-compose.yml)
 
-Конфигурация Prometheus писана в файле [prometheus.yml](03-Prometheus-exporters/prometheus/prometheus.yml)
+Конфигурация Prometheus писана в файле [prometheus.yml](prometheus/prometheus.yml)
 
 Все таргеты и их метрики доступны в Prometheus с интервалом сбора в 5 секунд
 
