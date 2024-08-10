@@ -100,7 +100,7 @@ Exporters запущены и отображают метрики
 
 Для запуска Prometheus использовал Docker [docker-compose.yml](prometheus/docker-compose.yml)
 
-Конфигурация Prometheus писана в файле [prometheus.yml](prometheus/prometheus.yml)
+Конфигурация Prometheus описана в файле [prometheus.yml](prometheus/prometheus.yml)
 
 Все таргеты и их метрики доступны в Prometheus с интервалом сбора в 5 секунд
 
