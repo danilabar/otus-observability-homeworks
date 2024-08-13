@@ -14,7 +14,7 @@
     - role: prometheus.prometheus.node_exporter
     - role: php_fpm_exporter
 
-- name: Install exporters on CMS
+- name: Install blackbox_exporter
   hosts: promvm-1
   roles:
     - role: prometheus.prometheus.blackbox_exporter
