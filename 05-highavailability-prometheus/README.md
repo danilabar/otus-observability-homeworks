@@ -18,7 +18,7 @@ Metrics retention - 2 weeks
 
 # Решение
 
-Для метрик была переиспользована машина из прошлого ДЗ [03-Prometheus-exporters](03-Prometheus-exporters/README.md)
+Для метрик была переиспользована машина из прошлого ДЗ [03-Prometheus-exporters](../03-Prometheus-exporters/README.md)
 `#Машина с CMS`, в качестве долговременного хранилища метрик выбрал Victoria Metrics.
 
 Prometheus и Victoria Metrics запущены в Docker [docker-compose.yml](docker/docker-compose.yml), там же
