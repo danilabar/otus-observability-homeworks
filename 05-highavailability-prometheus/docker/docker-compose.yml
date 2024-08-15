@@ -1,0 +1,40 @@
+networks:
+  monitoring:
+    driver: bridge
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    ports:
+      - 9090:9090
+    restart: always
+    networks:
+      - monitoring
+#    environment:
+#      TZ: "Europe/Moscow"
+
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:latest
+    container_name: victoriametrics
+    volumes:
+      - /var/lib/victoriametrics:/victoria-metrics-data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    command:
+      - '-retentionPeriod=2w'
+    ports:
+      - 8428:8428
+    restart: always
+    networks:
+      - monitoring
