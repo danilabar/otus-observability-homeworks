@@ -13,6 +13,8 @@
 алерты с severity warning в другой;
 - В качестве результата ДЗ принимаются - файл конфигурации Alertmanager
 
+---
+
 # Решение
 
 Для метрик была переиспользована машина из прошлого ДЗ [03-Prometheus-exporters](../03-Prometheus-exporters/README.md)

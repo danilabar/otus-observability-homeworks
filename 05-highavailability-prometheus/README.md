@@ -16,6 +16,8 @@
 Metrics retention - 2 weeks
 В качестве результата ДЗ принимаются - файл конфигурации системы хранения, файл конфигурации Prometheus.
 
+---
+
 # Решение
 
 Для метрик была переиспользована машина из прошлого ДЗ [03-Prometheus-exporters](../03-Prometheus-exporters/README.md)
