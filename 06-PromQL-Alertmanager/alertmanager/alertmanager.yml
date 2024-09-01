@@ -1,0 +1,36 @@
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 10m
+  repeat_interval: 60m
+  receiver: "email"
+  routes:
+    - receiver: "email"
+      match_re:
+        severity: warning
+      continue: true
+
+    - receiver: "telegram"
+      match_re:
+        severity: critical
+      continue: true
+
+receivers:
+  - name: "telegram"
+    telegram_configs:
+      - api_url: "https://api.telegram.org"
+        chat_id: 360204218
+        bot_token_file: /etc/alertmanager/.am_tg_bot_token_file
+        send_resolved: true
+        message: '{{ template "telegram.default.message" .}}'
+
+  - name: "email"
+    email_configs:
+      - smarthost: smtp.mail.ru:587
+        to: "ly3ubfojukpz@mail.ru"
+        auth_identity: "danilabar@mail.ru"
+        from: "danilabar@mail.ru"
+        auth_username: "danilabar@mail.ru"
+        auth_password_file: /etc/alertmanager/.am_email_auth_password_file
+        require_tls: true
+        send_resolved: true
