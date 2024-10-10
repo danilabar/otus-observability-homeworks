@@ -61,7 +61,7 @@ dnf install telegraf -y
 telegraf config > telegraf.conf
 ```
 
-Настроил для Telegraf сбор и отправку метрик в [01-telegraf.conf](TICK-1/telegraf/telegraf.conf) и разместил по пути `/etc/telegraf/telegraf.d/`
+Настроил для Telegraf сбор и отправку метрик в [01-telegraf.conf](TICK-1/telegraf/01-telegraf.conf) и разместил по пути `/etc/telegraf/telegraf.d/`
 
 ## Развёртывание Influxdb, Chronograf, Kapacitor
 
