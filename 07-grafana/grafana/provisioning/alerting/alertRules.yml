@@ -1,0 +1,102 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: evaluation_group_app_1
+      folder: app
+      interval: 1m
+      rules:
+        - uid: ce1adat26yigwb
+          title: Site bad status code
+          condition: Site status code
+          data:
+            - refId: Site status code
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: prometheus_main
+              model:
+                disableTextWrap: false
+                editorMode: code
+                exemplar: false
+                expr: probe_http_status_code >= 500
+                format: time_series
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: '{{instance}}'
+                maxDataPoints: 43200
+                range: false
+                refId: Site status code
+                useBackend: false
+          dashboardUid: fe19uh28gudj4c
+          panelId: 1
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: fe19uh28gudj4c
+            __panelId__: "1"
+          labels: {}
+          isPaused: false
+    - orgId: 1
+      name: evaluation_group_infra_1
+      folder: infra
+      interval: 1m
+      rules:
+        - uid: ae1a7rmk0a6m8c
+          title: CPU Usage
+          condition: High CPU Usage
+          data:
+            - refId: High CPU Usage
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: prometheus_main
+              model:
+                editorMode: code
+                expr: round(sum by (instance) (avg by (mode, instance) (rate(node_cpu_seconds_total{mode!="idle"}[1m]))), 0.1)
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: High CPU Usage
+            - refId: Firing
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0.8
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: High CPU Usage
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: Firing
+                type: threshold
+          dashboardUid: rYdddlPWk
+          panelId: 77
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: rYdddlPWk
+            __panelId__: "77"
+          labels: {}
+          isPaused: false
