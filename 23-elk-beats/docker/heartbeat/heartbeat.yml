@@ -1,0 +1,130 @@
+############################# Heartbeat ######################################
+
+# Configure monitors
+heartbeat.monitors:
+- type: tcp # monitor type `tcp`. Connect via TCP and optionally verify the endpoint
+            # by sending/receiving a custom payload
+  # ID used to uniquely identify this monitor in Elasticsearch even if the config changes
+  id: cms-mysql-monitor
+
+  # Human readable display name for this service in Uptime UI and elsewhere
+  name: CMS MySQL Probe
+
+  # Enable/Disable monitor
+  enabled: true
+
+  # Configure task schedule
+  schedule: '@every 10s' # every 5 seconds from start of beat
+
+  # configure hosts to ping.
+  # Entries can be:
+  #   - plain hostname or IP like `localhost`:
+  #       Requires ports configs to be checked. If ssl is configured,
+  #       an SSL/TLS based connection will be established. Otherwise plain tcp connection
+  #       will be established
+  #   - hostname + port like `localhost:12345`:
+  #       Connect to port on a given host. If ssl is configured,
+  #       an SSL/TLS based connection will be established. Otherwise plain tcp connection
+  #       will be established
+  #   - full url syntax. `scheme://<host>:[port]`. The `<scheme>` can be one of
+  #     `tcp`, `plain`, `ssl`, and `tls`. If `tcp`, `plain` is configured, a plain
+  #     tcp connection will be established, even if ssl is configured.
+  #     Using `tls`/`ssl`, an SSL connection is established. If no ssl is configured,
+  #     system defaults will be used (not supported on windows).
+  #     If `port` is missing in url, the port setting is required.
+  hosts: ["tcp://cmsvm-1.home.local:3306"]
+
+  # Configure IP protocol types to ping if hostnames are configured.
+  # Ping all resolvable IPs if `mode` is `all`, or only one IP if `mode` is `any`.
+  ipv4: true
+  mode: any
+
+- type: http # monitor type `http`. Connect via HTTP and optionally verify the response
+  # ID used to uniquely identify this monitor in Elasticsearch even if the config changes.
+  id: cms-http-monitor
+
+  # Human readable display name for this service in Uptime UI and elsewhere
+  name: CMS HTTP Probe
+
+  # Enable/Disable monitor
+  enabled: true
+
+  # Configure task schedule
+  schedule: '@every 10s' # every 5 seconds from the start of beat
+
+  # Configure URLs to ping
+  urls: ["http://cmsvm-1.home.local"]
+
+  # Configure IP protocol types to ping if hostnames are configured.
+  # Ping all resolvable IPs if `mode` is `all`, or only one IP if `mode` is `any`.
+  ipv4: true
+  mode: any
+
+  # Expected response settings
+  check.response:
+    # Expected status code. If not configured or set to 0 any status code not
+    # being 404 is accepted.
+    status: 200
+
+
+heartbeat.scheduler:
+  # Limit the number of concurrent tasks executed by heartbeat. The task limit if
+  # disabled if set to 0. The default is 0.
+  #limit: 0
+
+  # Set the scheduler to its time zone
+  #location: ''
+
+heartbeat.jobs:
+  # Limit the number of concurrent monitors executed by heartbeat. This differs from
+  # heartbeat.scheduler.limit in that it maps to individual monitors rather than the
+  # subtasks of monitors. For non-browser monitors, a subtask usually corresponds to a
+  # single file descriptor.
+  # This feature is most useful for the browser type
+  #browser.limit: 1
+  #http.limit: 10
+  #tcp.limit: 10
+  #icmp.limit: 10
+
+# ================================== Outputs ===================================
+
+# Configure what output to use when sending the data collected by the beat.
+
+# ---------------------------- Elasticsearch Output ----------------------------
+output.elasticsearch:
+  enabled: true
+  hosts: ["promvm-1.home.local:9200"]
+  preset: balanced
+  protocol: "http"
+  username: "elastic"
+  password: "47v4H9JFktoj-yE=nUg="
+
+# ================================= Dashboards =================================
+
+#setup.dashboards.enabled: true
+
+# =================================== Kibana ===================================
+
+# Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
+# This requires a Kibana endpoint configuration.
+setup.kibana:
+
+  host: "http://promvm-1.home.local:5601"
+
+  protocol: "http"
+
+# ================================== Logging ===================================
+
+# There are four options for the log output: file, stderr, syslog, eventlog
+# The file output is the default.
+
+# Sets log level. The default log level is info.
+# Available log levels are: error, warning, info, debug
+#logging.level: info
+
+# =============================== Feature Flags ================================
+
+# Enable and configure feature flags.
+#features:
+#  fqdn:
+#    enabled: true

@@ -1,0 +1,34 @@
+---
+- name: Download Metricbeat RPM
+  become: false
+  ansible.builtin.get_url:
+    url: "{{ metricbeat_rpm_url }}"
+    dest: "{{ metricbeat_rpm_temporary_file }}"
+    mode: '0644'
+  register: _download_rpm
+  until: _download_rpm is succeeded
+  retries: 5
+  delay: 2
+  delegate_to: localhost
+
+- name: Propagate Metricbeat RPM
+  ansible.builtin.copy:
+    src: "{{ metricbeat_rpm_temporary_file }}"
+    dest: "{{ metricbeat_rpm_temporary_file }}"
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Install Metricbeat RPM
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ metricbeat_rpm_temporary_file }}"
+    state: present
+    disable_gpg_check: true
+  notify: start metricbeat
+
+- name: Copy Metricbeat Config
+  ansible.builtin.copy:
+    src: ./
+    dest: /
+  notify: restart metricbeat

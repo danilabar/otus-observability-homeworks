@@ -1,0 +1,6 @@
+---
+- name: Install Beats on CMS
+  hosts: CMS
+  roles:
+    - role: filebeat
+    - role: metricbeat

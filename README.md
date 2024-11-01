@@ -8,3 +8,4 @@
 - [07 - Grafana - продвинутое использование](07-grafana/README.md)
 - [12 - Zabbix, Настройка алертинга](12-zabbix-alerting/README.md)
 - [18 - Алертинг с Kapacitor](18-tick-alerting/README.md)
+- [23 - Beats - инструменты доставки данных](23-elk-beats/README.md)

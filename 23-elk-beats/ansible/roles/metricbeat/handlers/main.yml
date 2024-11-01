@@ -1,0 +1,16 @@
+---
+- name: Start metricbeat
+  listen: "start metricbeat"
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: metricbeat
+    state: started
+    enabled: true
+
+- name: Restart metricbeat
+  listen: "restart metricbeat"
+  become: true
+  ansible.builtin.systemd:
+    name: metricbeat
+    state: restarted

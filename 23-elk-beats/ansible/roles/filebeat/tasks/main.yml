@@ -1,0 +1,31 @@
+---
+- name: Download Filebeat RPM
+  become: false
+  ansible.builtin.get_url:
+    url: "{{ filebeat_rpm_url }}"
+    dest: "{{ filebeat_rpm_temporary_file }}"
+    mode: '0644'
+  register: _download_rpm
+  until: _download_rpm is succeeded
+  retries: 5
+  delay: 2
+  delegate_to: localhost
+
+- name: Propagate Filebeat RPM
+  ansible.builtin.copy:
+    src: "{{ filebeat_rpm_temporary_file }}"
+    dest: "{{ filebeat_rpm_temporary_file }}"
+
+- name: Install Filebeat RPM
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ filebeat_rpm_temporary_file }}"
+    state: present
+    disable_gpg_check: true
+  notify: start filebeat
+
+- name: Copy Filebeat Config
+  ansible.builtin.copy:
+    src: ./
+    dest: /
+  notify: restart filebeat
