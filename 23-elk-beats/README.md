@@ -60,7 +60,7 @@ mysql> quit;
 
 ![img.png](img/img.png)
 
-## Установка Elasticsearch, kibana и Heartbeat
+## Установка Elasticsearch, Kibana и Heartbeat
 
 Данные сервисы развёрнуты с помощью [docker-compose.yml](docker/docker-compose.yml)
 
