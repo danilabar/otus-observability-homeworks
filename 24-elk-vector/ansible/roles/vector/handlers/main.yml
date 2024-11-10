@@ -1,0 +1,16 @@
+---
+- name: Start vector
+  listen: "start vector"
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: vector
+    state: started
+    enabled: true
+
+- name: Restart vector
+  listen: "restart vector"
+  become: true
+  ansible.builtin.systemd:
+    name: vector
+    state: restarted

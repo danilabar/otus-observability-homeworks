@@ -1,0 +1,20 @@
+---
+- name: Add Vector repo
+  ansible.builtin.yum_repository:
+    name: vector
+    description: Vector repo
+    baseurl: https://yum.vector.dev/stable/vector-0/$basearch/
+    gpgcheck: no
+    enabled: yes
+
+- name: Install the latest version of Vector
+  ansible.builtin.dnf:
+    name: vector
+    state: latest
+  notify: start vector
+
+- name: Copy Vector Config
+  ansible.builtin.copy:
+    src: ./
+    dest: /
+  notify: restart vector
