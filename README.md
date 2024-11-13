@@ -10,3 +10,4 @@
 - [18 - Алертинг с Kapacitor](18-tick-alerting/README.md)
 - [23 - Beats - инструменты доставки данных](23-elk-beats/README.md)
 - [24 - Системы агрегации сообщений Logstash/Vector](24-elk-vector/REAMDE.md)
+- [27 - Grafana Loki - управление логами и доставка](27-grafana-loki/README.md)

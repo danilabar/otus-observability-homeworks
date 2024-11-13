@@ -1,0 +1,20 @@
+---
+- name: Add Grafana repo
+  ansible.builtin.yum_repository:
+    name: grafana
+    description: Grafana repo
+    baseurl: https://rpm.grafana.com
+    gpgcheck: no
+    enabled: yes
+
+- name: Install the latest version of Grafana Alloy
+  ansible.builtin.dnf:
+    name: alloy
+    state: latest
+  notify: start alloy
+
+- name: Copy Grafana Alloy Config
+  ansible.builtin.copy:
+    src: ./
+    dest: /
+  notify: restart alloy

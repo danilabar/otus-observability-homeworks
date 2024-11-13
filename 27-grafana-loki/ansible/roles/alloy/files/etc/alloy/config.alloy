@@ -1,0 +1,77 @@
+// --------------- nginx ---------------
+
+local.file_match "nginx_local_files" {
+    path_targets = [{"__path__" = "/var/log/nginx/*log"}]
+    sync_period = "5s"
+}
+
+loki.source.file "nginx_log_scrape" {
+    targets    = local.file_match.nginx_local_files.targets
+    forward_to = [loki.process.nginx_filter_logs.receiver]
+    tail_from_end = true
+}
+
+loki.process "nginx_filter_logs" {
+    stage.static_labels {
+        values = {
+          service_name  = "nginx",
+        }
+    }
+    forward_to = [loki.write.grafana_loki.receiver]
+}
+
+// --------------- php-fpm ---------------
+
+local.file_match "php_fpm_local_files" {
+    path_targets = [{"__path__" = "/var/log/php-fpm/error.log"}]
+    sync_period = "5s"
+}
+
+loki.source.file "php_fpm_log_scrape" {
+    targets    = local.file_match.php_fpm_local_files.targets
+    forward_to = [loki.process.php_fpm_filter_logs.receiver]
+    tail_from_end = true
+}
+
+loki.process "php_fpm_filter_logs" {
+    stage.static_labels {
+        values = {
+          service_name  = "php-fpm",
+        }
+    }
+    forward_to = [loki.write.grafana_loki.receiver]
+}
+
+// --------------- mysql ---------------
+
+local.file_match "mysql_local_files" {
+    path_targets = [{"__path__" = "/var/log/mysql/mysqld.log"}]
+    sync_period = "5s"
+}
+
+loki.source.file "mysql_log_scrape" {
+    targets    = local.file_match.mysql_local_files.targets
+    forward_to = [loki.process.mysql_filter_logs.receiver]
+    tail_from_end = true
+}
+
+loki.process "mysql_filter_logs" {
+    stage.static_labels {
+        values = {
+          service_name  = "mysql",
+        }
+    }
+    forward_to = [loki.write.grafana_loki.receiver]
+}
+
+// --------------- output ---------------
+
+loki.write "grafana_loki" {
+    endpoint {
+        url = "http://promvm-1.home.local:3100/loki/api/v1/push"
+        // basic_auth {
+            // username = "admin"
+            // password = "admin"
+        // }
+    }
+}
