@@ -25,6 +25,10 @@
 
 Для сбора логов установил Grafana Alloy с помощью [Ansible](ansible/site.yml)
 
+```shell
+ansible-playbook site.yml -i inventory/beats.yml -u root -k
+```
+
 - Конфигурация Alloy описана в [config.alloy](ansible/roles/alloy/files/etc/alloy/config.alloy)
 
 Для доступа Alloy к файлам логов добавил его пользователя в необходимые группы и поправил права на каталогах
