@@ -45,7 +45,7 @@ ansible-playbook site.yml -i inventory/beats.yml -u root -k
 
 ## Data Prepper
 
-Data Prepper запущен с помощью [docker-compose.yml](docker/docker-compose.yml)
+Data Prepper запущены с помощью [docker-compose.yml](docker/docker-compose.yml)
 
 Конфигурация приёма, парсинга и отправки логов описана в [pipeline.yaml](docker/dataprepper/pipeline.yaml)
 
