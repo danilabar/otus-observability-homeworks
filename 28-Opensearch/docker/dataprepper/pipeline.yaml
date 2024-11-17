@@ -1,0 +1,28 @@
+log-pipeline:
+  source:
+    http:
+      port: 2021
+      ssl: false
+  processor:
+    - grok:
+        grok_when: '/app_name == "nginx"'
+        match:
+          log: ['%{COMMONAPACHELOG}']
+    - grok:
+        grok_when: '/app_name == "php-fpm"'
+        match:
+          log: ['\[%{GREEDYDATA:event.date}\] %{LOGLEVEL:event.log_level}\: %{GREEDYDATA:event.message}']
+    - grok:
+        grok_when: '/app_name == "mysql"'
+        match:
+          log: ['%{TIMESTAMP_ISO8601:event.date} %{NOTSPACE:event.thread} \[%{NOTSPACE:event.label}\] \[%{NOTSPACE:event.err_code}\] \[%{NOTSPACE:event.subsystem}\] %{GREEDYDATA:event.message}']
+
+  sink:
+    - opensearch:
+        hosts: ["https://promvm-1.home.local:9200"]
+        insecure: true
+        username: admin
+        password: v_im5welNPpymxdXfxR
+        index: os-dataprepper-${/app_name}-%{yyyy.MM.dd}
+        template_type: index-template
+    - stdout:

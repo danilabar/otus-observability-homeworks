@@ -1,0 +1,63 @@
+networks:
+  monitoring:
+    driver: bridge
+
+volumes:
+  opensearch_vol:
+    driver: local
+
+services:
+  dataprepper:
+    container_name: dataprepper
+    image: opensearchproject/data-prepper:2.10.1
+    volumes:
+      - ./dataprepper/pipeline.yaml:/usr/share/data-prepper/pipelines/pipeline.yaml
+    ports:
+      - 2021:2021
+    networks:
+      - monitoring
+    restart: always
+    depends_on:
+      - opensearch
+
+  opensearch:
+    image: opensearchproject/opensearch:2.18.0
+    container_name: opensearch
+    environment:
+      - cluster.name=opensearch-docker-cluster
+      - node.name=opensearch
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=v_im5welNPpymxdXfxR
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - opensearch_vol:/usr/share/opensearch/data
+    ports:
+      - 9200:9200
+      - 9600:9600
+    networks:
+      - monitoring
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.18.0
+    container_name: opensearch-dashboards
+    ports:
+      - 5601:5601
+    expose:
+      - "5601"
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
+      OPENSEARCH_USERNAME: "admin"
+      OPENSEARCH_PASSWORD: "v_im5welNPpymxdXfxR"
+    networks:
+      - monitoring
+    depends_on:
+      - opensearch
+

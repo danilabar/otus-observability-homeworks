@@ -1,0 +1,5 @@
+---
+- name: Install Beats on CMS
+  hosts: CMS
+  roles:
+    - role: fluentbit

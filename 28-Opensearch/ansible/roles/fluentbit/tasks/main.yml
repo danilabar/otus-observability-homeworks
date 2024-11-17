@@ -1,0 +1,47 @@
+---
+- name: Add Fluent Bit repo
+  ansible.builtin.yum_repository:
+    name: fluent-bit
+    description: Fluent Bit repo
+    baseurl: https://packages.fluentbit.io/centos/$releasever/
+    gpgcheck: no
+    enabled: yes
+
+- name: Install the latest version of Fluent Bit
+  ansible.builtin.dnf:
+    name: fluent-bit
+    state: latest
+  notify: start fluent-bit
+
+- name: Create a fluent-bit.service override directory
+  ansible.builtin.file:
+    owner: root
+    group: root
+    mode: 0755
+    path: /usr/lib/systemd/system/fluent-bit.service.d
+    state: directory
+
+- name: Set up fluent-bit.service override
+  community.general.ini_file:
+    dest: /usr/lib/systemd/system/fluent-bit.service.d/fluent-bit_override.conf
+    owner: root
+    group: root
+    mode: 0644
+    section: Service
+    option: ExecStart
+    value: /opt/fluent-bit/bin/fluent-bit -c //etc/fluent-bit/fluent-bit.yaml
+  notify: daemon reload
+
+- name: Absent fluent-bit.service ExecStart
+  ansible.builtin.lineinfile:
+    path: /usr/lib/systemd/system/fluent-bit.service
+    state: absent
+    regexp: '^ExecStart'
+  notify: daemon reload
+
+- name: Copy Fluent Bit Config
+  ansible.builtin.copy:
+    src: etc/fluent-bit/fluent-bit.yaml
+    dest: /etc/fluent-bit/fluent-bit.yaml
+  notify: restart fluent-bit
+

@@ -1,0 +1,47 @@
+service:
+  flush: 5
+  daemon: Off
+  log_level: info
+  parsers_file: parsers.conf
+  plugins_file: plugins.conf
+  http_server: Off
+  http_listen: 0.0.0.0
+  http_port: 2020
+  storage.metrics: on
+
+pipeline:
+  inputs:
+    - name: tail
+      path: /var/log/nginx/*log
+      refresh_interval: 5
+      tag: nginx
+    - name: tail
+      path: /var/log/php-fpm/error.log
+      refresh_interval: 5
+      tag: php-fpm
+    - name: tail
+      path: /var/log/mysql/mysqld.log
+      refresh_interval: 5
+      tag: mysql
+  filters:
+    - name: modify
+      match: nginx
+      add:
+        - app_name nginx
+    - name: modify
+      match: php-fpm
+      add:
+        - app_name php-fpm
+    - name: modify
+      match: mysql
+      add:
+        - app_name mysql
+  outputs:
+    - name: http
+      match: '*'
+      host: promvm-1.home.local
+      port: 2021
+      URI: /log/ingest
+      format: json
+    - name: stdout
+      match: '*'
