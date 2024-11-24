@@ -1,0 +1,4 @@
+server_url: "http://promvm-1.home.local:9000/api/"
+server_api_token: "6tnufvt8l4srpcahrinlvjitbhvohrivh2r529a0773b4vnmp1v"
+tags:
+  - default

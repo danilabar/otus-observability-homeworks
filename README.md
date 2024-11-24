@@ -1,4 +1,4 @@
-# otus-observability-homeworks
+# Otus Observability Homeworks
 
 Репозиторий для выполнения домашних заданий по курсу Observability в Otus
 
@@ -12,3 +12,4 @@
 - [24 - Системы агрегации сообщений Logstash/Vector](24-elk-vector/REAMDE.md)
 - [27 - Grafana Loki - управление логами и доставка](27-grafana-loki/README.md)
 - [28 - Opensearch](28-Opensearch/README.md)
+- [29 - Graylog](29-Graylog/README.md)
